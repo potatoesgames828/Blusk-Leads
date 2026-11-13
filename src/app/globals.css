@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* Identidade Blusk Leads: neutros frios + um único destaque (azul "blusk"). */
+@theme {
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c3cdfd;
+  --color-brand-500: #4a5cf0;
+  --color-brand-600: #3443d9;
+  --color-brand-700: #2a35b0;
+  --color-brand-900: #1b2166;
+
+  --color-ink-50: #f7f8fa;
+  --color-ink-100: #eef0f4;
+  --color-ink-200: #dfe3ea;
+  --color-ink-300: #c4cad5;
+  --color-ink-500: #6a7385;
+  --color-ink-600: #4d5566;
+  --color-ink-700: #353b48;
+  --color-ink-900: #151922;
+
+  --color-hot: #d9480f;
+  --color-warm: #b7791f;
+  --color-cold: #3d6a99;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-ink-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+}
+
+/* Foco sempre visível para navegação por teclado. */
+:focus-visible {
+  outline: 3px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}

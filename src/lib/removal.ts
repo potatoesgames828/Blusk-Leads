@@ -1,5 +1,6 @@
 import type { Sql } from "./db";
-import { normalizeBrPhone, phoneHash } from "./phone";
+import { normalizeBrPhone } from "./phone";
+import { phoneHash } from "./phone-hash";
 
 export class RemovalError extends Error {}
 

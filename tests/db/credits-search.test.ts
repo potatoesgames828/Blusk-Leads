@@ -70,9 +70,9 @@ describe("busca de leads e cobrança", () => {
     expect(r2.status).toBe("parcial");
     expect(r2.descartados.repetido).toBe(20);
     expect(await balance(u.workspaceId)).toBe(80 - (r2.entregues));
-    const [{ n }] = (await db()<{ n: number }[]>`select count(*)::int as n from leads where workspace_id = ${u.workspaceId}`) as [{ n: number }];
+    const { n } = (await db()<{ n: number }[]>`select count(*)::int as n from leads where workspace_id = ${u.workspaceId}`)[0]!;
     expect(n).toBe(20 + r2.entregues);
-    const [{ d }] = (await db()<{ d: number }[]>`select count(*)::int - count(distinct business_id)::int as d from leads where workspace_id = ${u.workspaceId}`) as [{ d: number }];
+    const { d } = (await db()<{ d: number }[]>`select count(*)::int - count(distinct business_id)::int as d from leads where workspace_id = ${u.workspaceId}`)[0]!;
     expect(d).toBe(0);
   });
 
@@ -153,8 +153,8 @@ describe("busca de leads e cobrança", () => {
     const users = await Promise.all([1, 2, 3].map(() => makeUser({ plano: "pago", creditos: 100 })));
     const ids = await Promise.all(users.map((u) => createSearch(db(), u.userId, u.workspaceId, { nicho: "sorveteria", cidade: "Belém", uf: "PA", filtro: "qualquer", pedidos: 30 })));
     await Promise.all(ids.map((id) => runSearch(db(), id, new FakeProvider())));
-    const [{ total, distintos }] = (await db()<{ total: number; distintos: number }[]>`
-      select count(*)::int as total, count(distinct business_id)::int as distintos from leads where search_id = any(${ids}::uuid[])`) as [{ total: number; distintos: number }];
+    const { total, distintos } = (await db()<{ total: number; distintos: number }[]>`
+      select count(*)::int as total, count(distinct business_id)::int as distintos from leads where search_id = any(${ids}::uuid[])`)[0]!;
     expect(total).toBe(distintos);
     expect(total).toBeLessThanOrEqual(30);
     let saldoTotal = 0;

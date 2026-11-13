@@ -3,7 +3,7 @@ import { applyCredit, InsufficientCreditsError } from "../credits";
 import type { Sql } from "../db";
 import { OFFER_FILTERS, type OfferFilter } from "../filters";
 import { matchesExcludedNiche } from "../niches";
-import { phoneHash } from "../phone";
+import { phoneHash } from "../phone-hash";
 import { getLeadProvider, ProviderError, type LeadProvider } from "../providers";
 import { scoreBusiness, temperatureOf } from "../score/engine";
 import { getAppSettings } from "../settings";
@@ -251,7 +251,7 @@ export async function finalizeSearch(
     const [s] = await tx<{ workspace_id: string; pedidos: number; creditos_por_lead: number; nicho: string; user_id: string }[]>`
       select workspace_id, pedidos, creditos_por_lead, nicho, user_id from searches where id = ${searchId} for update`;
     if (!s) return;
-    const [{ n: entregues }] = (await tx<{ n: number }[]>`select count(*)::int as n from leads where search_id = ${searchId}`) as [{ n: number }];
+    const { n: entregues } = (await tx<{ n: number }[]>`select count(*)::int as n from leads where search_id = ${searchId}`)[0]!;
     const naoEntregues = Math.max(0, s.pedidos - entregues);
     if (naoEntregues > 0) {
       await applyCredit(tx, {

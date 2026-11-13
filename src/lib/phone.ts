@@ -1,5 +1,3 @@
-import { createHash } from "node:crypto";
-
 export interface NormalizedPhone {
   e164: string; // +5511987654321
   ddd: string;
@@ -26,11 +24,6 @@ export function normalizeBrPhone(raw: string | null | undefined): NormalizedPhon
   if (numero.length === 9 && !celular) return null;
   if (numero.length === 8 && !/^[2-5]/.test(numero)) return null;
   return { e164: `+55${ddd}${numero}`, ddd, numero, celular };
-}
-
-/** Hash estável do telefone para bloqueio global sem precisar guardar o número. */
-export function phoneHash(e164: string): string {
-  return createHash("sha256").update(`blusk-phone:${e164}`).digest("hex");
 }
 
 export function formatBrPhone(e164: string | null | undefined): string {

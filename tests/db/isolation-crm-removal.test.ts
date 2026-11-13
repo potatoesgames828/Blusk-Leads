@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { cadenceDates, CrmError, moveLead, sendToCrm } from "@/lib/crm";
 import { sql, withUser } from "@/lib/db";
-import { phoneHash } from "@/lib/phone";
+import { phoneHash } from "@/lib/phone-hash";
 import { FakeProvider } from "@/lib/providers/fake";
 import { rejectRemoval, submitRemoval } from "@/lib/removal";
 import { createSearch, runSearch } from "@/lib/search/run";
